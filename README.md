@@ -22,6 +22,21 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Features
+
+- **Pet management** — Add and track multiple pets with name, species, and age. Each pet maintains its own independent task list.
+- **Task creation** — Define care tasks with a description, duration (minutes), frequency, priority, and an optional scheduled time (HH:MM).
+- **Priority-based scheduling** — The scheduler ranks pending tasks by priority (1 = high) and fits them within the owner's available time for the day.
+- **Time-based sorting** — When tasks have an assigned time, the scheduler orders them chronologically so the plan reads like a real daily timeline.
+- **Daily recurrence** — Marking a daily or weekly task complete automatically queues a fresh pending copy for the next due date.
+- **Conflict warnings** — Surfaces two types of warnings without crashing: tasks that exceed available time, and two tasks assigned to the exact same time slot.
+- **Pet and status filtering** — Scope a generated plan to a single pet or filter by completion status.
+- **Plan explanation** — After scheduling, the app explains the reasoning (priority order, due date, available time).
+- **Streamlit UI** — Interactive interface using `st.table`, `st.success`, and `st.warning` to present the schedule and flag issues clearly.
+- **Automated test suite** — 10 pytest tests covering happy paths, edge cases, recurrence, sorting, and conflict detection.
+
+---
+
 ## Smarter Scheduling
 
 The `Scheduler` class goes beyond a simple task list:
@@ -55,12 +70,15 @@ python -m pytest tests/test_pawpal.py -v
 - **Sorting correctness** — tasks with `HH:MM` times are returned in chronological order
 
 ### Confidence Level
-
-★★★★☆ (4/5)
+(4/5)
 
 Core scheduling behaviors are well covered. The main gap is duration-overlap detection — two tasks at different times can still overlap in real time, and that is not yet tested.
 
 ---
+
+## 📸 Demo
+
+<a href="/course_images/ai110/your_screenshot_name.png" target="_blank"><img src='/course_images/ai110/your_screenshot_name.png' title='PawPal App' width='' alt='PawPal App' class='center-block' /></a>
 
 ## Getting started
 
