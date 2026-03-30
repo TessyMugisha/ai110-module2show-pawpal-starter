@@ -1,17 +1,29 @@
 # PawPal+ Project Reflection
 
 ## 1. System Design
+Track completed tasks
+See all pets and perform CRUD operations
+Have a daily plan and availability
 
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+My initial UML design includes four classes: User, Pet, Task, and DailyPlan.
 - What classes did you include, and what responsibilities did you assign to each?
+User is responsible for representing the pet owner. It holds their name, how much time they have available, and their preferences. It handles logging in and out of the app.
+
+Pet holds all the information about an animal — its name, species, age, and care needs like feeding schedule or walk frequency. It can return its care needs and update its own info.
+
+Task represents a single care action like a walk, feeding, or medication. It belongs to a specific pet and tracks the task type, how long it takes, its priority, and whether it's been completed. It can be marked complete or updated.
+
+DailyPlan is responsible for the scheduling logic. It holds the date, the owner's available time, and the list of tasks for the day. It generates the plan, displays it, and explains why certain tasks were chosen.
 
 **b. Design changes**
 
 - Did your design change during implementation?
+yes
 - If yes, describe at least one change and why you made it.
-
+Originally, DailyPlan was its own separate thing with no connection to the User. I updated it so the plan knows who the owner is, which lets it pull the owner's available time automatically when generating the schedule. Without that link, the plan had no way to know how much time the owner actually had that day.
 ---
 
 ## 2. Scheduling Logic and Tradeoffs
@@ -24,7 +36,10 @@
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+The scheduler detects conflicts only by exact time match (e.g., two tasks both set to "09:00"). It does not check whether task durations overlap — for example, a 30-minute task at 08:00 and a 10-minute task at 08:15 would not be flagged as a conflict even though they overlap in real time.
+
 - Why is that tradeoff reasonable for this scenario?
+For a daily pet care planner, most tasks are discrete events (feed, walk, meds) that owners do one at a time. Exact time matching catches the most common scheduling mistake — accidentally assigning two things to the same slot — without adding complexity. Duration-overlap detection would require tracking start and end times for every task, which is more logic than this use case needs right now.
 
 ---
 

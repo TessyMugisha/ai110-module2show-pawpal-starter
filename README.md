@@ -22,6 +22,18 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+The `Scheduler` class goes beyond a simple task list:
+
+- **Recurrence awareness** — tasks know their frequency (`daily`, `weekly`, `as needed`) and are only included if they are actually due on the plan date via `is_due()`.
+- **Time-based sorting** — if tasks have an optional `HH:MM` time, the scheduler sorts by clock order; otherwise it sorts by priority then shortest duration.
+- **Filtering** — `generate_plan()` accepts an optional `pet_name` or `status_filter` to build a plan scoped to one pet or one task state.
+- **Conflict detection** — after scheduling, `_find_conflicts()` reports two types of warnings without crashing: tasks that couldn't fit within available time, and tasks assigned to the exact same time slot.
+- **Recurring task queue** — marking a daily or weekly task complete automatically clones a new pending instance for the next occurrence.
+
+---
+
 ## Getting started
 
 ### Setup
