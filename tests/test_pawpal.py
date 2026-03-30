@@ -113,6 +113,36 @@ def test_scheduler_detects_conflicts_for_overfull_day():
     assert "could not be scheduled" in scheduler.conflicts[0]
 
 
+def test_scheduler_flags_duplicate_time_conflict():
+    owner = Owner(name="Alex", availability=60)
+    buddy = Pet(name="Buddy", species="Dog", age=3)
+    whiskers = Pet(name="Whiskers", species="Cat", age=5)
+
+    walk = Task(description="Morning walk", duration=10, frequency="daily", time="09:00")
+    meds = Task(description="Give medication", duration=5, frequency="daily", time="09:00")
+    buddy.add_task(walk)
+    whiskers.add_task(meds)
+    owner.add_pet(buddy)
+    owner.add_pet(whiskers)
+
+    scheduler = Scheduler(owner=owner, plan_date=date.today())
+    scheduler.generate_plan()
+
+    assert any("Time conflict at 09:00" in msg for msg in scheduler.conflicts)
+
+
+def test_scheduler_handles_pet_with_no_tasks():
+    owner = Owner(name="Alex", availability=60)
+    empty_pet = Pet(name="Ghost", species="Cat", age=2)
+    owner.add_pet(empty_pet)
+
+    scheduler = Scheduler(owner=owner, plan_date=date.today())
+    plan = scheduler.generate_plan()
+
+    assert plan == []
+    assert scheduler.conflicts == []
+
+
 def test_sort_by_time_sorts_tasks_by_hh_mm():
     task_early = Task(
         description="Feed breakfast",

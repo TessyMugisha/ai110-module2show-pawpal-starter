@@ -34,6 +34,34 @@ The `Scheduler` class goes beyond a simple task list:
 
 ---
 
+## Testing PawPal+
+
+Run the full test suite with:
+
+```bash
+python -m pytest tests/test_pawpal.py -v
+```
+
+### What the tests cover
+
+- **Task completion** — `mark_complete()` correctly updates task status
+- **Task addition** — adding a task to a pet increases its task count
+- **Recurrence logic** — a daily task is due again the next day; marking it complete clones a new pending instance
+- **Owner filtering** — tasks can be filtered by pet name and/or status
+- **Scheduler filtering** — `generate_plan()` can be scoped to a single pet
+- **Conflict detection (time)** — warns when two tasks share the exact same time slot
+- **Conflict detection (availability)** — warns when due tasks exceed the owner's available time
+- **Edge case: empty pet** — a pet with no tasks produces an empty plan with no crashes
+- **Sorting correctness** — tasks with `HH:MM` times are returned in chronological order
+
+### Confidence Level
+
+★★★★☆ (4/5)
+
+Core scheduling behaviors are well covered. The main gap is duration-overlap detection — two tasks at different times can still overlap in real time, and that is not yet tested.
+
+---
+
 ## Getting started
 
 ### Setup
